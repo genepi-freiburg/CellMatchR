@@ -13,5 +13,5 @@ Matching can be performed across all genes in the dataset or across a chosen set
 ## Data Processing
 
 Pseudobulk counts of each cell type and gene were created by summing the counts for each gene across all single cells annotated to the same cell type. The counts data were then normalized by calculating the counts per million (CPM) for each pseudobulk cell type.
-# CellMatchR
+
 
