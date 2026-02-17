@@ -1,10 +1,10 @@
 # CellMatchR
 
-CellMatchR is an efficient tool to statistically compare gene expression profiles derived from RNA sequencing of whole tissues, primary cells, and cell lines of the kidney.
+CellMatchR is an efficient tool to compare gene expression profiles derived from RNA sequencing of whole tissues, primary cells, and cell lines of the kidney using statistical and machine learning methods.
 
 ## References
 
-We are using published kidney single cell RNA sequencing datasets as references. For statistical comparisons, various approaches were tested for optimal performance, and we settled on using simple Spearman’s correlation coefficients and Euclidean distance.
+We are using published kidney single cell RNA sequencing datasets as references. For comparisons, various approaches were tested for optimal performance, we settled on simple Spearman’s correlation coefficients and Euclidean distance for statisical comparisons and TabPFN as machine learning model.
 
 ## Matching
 
