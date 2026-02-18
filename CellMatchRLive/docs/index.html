@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CellMatchR</title>
+    <style>
+      .loading-overlay {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: #f8f9fa;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+      .loading-overlay h2 { color: #3B75A3; margin-bottom: 10px; }
+      .loading-overlay p { color: #666; font-size: 16px; margin: 5px 0; }
+      .loading-overlay .spinner {
+        width: 50px; height: 50px;
+        border: 4px solid #e0e0e0;
+        border-top-color: #3B75A3;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 20px;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+    <script
+      src="./shinylive/load-shinylive-sw.js"
+      type="module"
+    ></script>
+    <script type="module">
+      import { runExportedApp } from "./shinylive/shinylive.js";
+      runExportedApp({
+        id: "root",
+        appEngine: "r",
+        relPath: "",
+      });
+    </script>
+    <link rel="stylesheet" href="./shinylive/style-resets.css" />
+    <link rel="stylesheet" href="./shinylive/shinylive.css" />
+    
+  </head>
+  <body>
+    
+    <div class="loading-overlay" id="loading">
+      <div class="spinner"></div>
+      <h2>CellMatchR</h2>
+      <p>Loading R environment...</p>
+      <p style="font-size: 14px; color: #999;">This may take 30-60 seconds on first visit</p>
+    </div>
+    <div style="height: 100vh; width: 100vw" id="root"></div>
+    <script>
+      // Hide loading overlay when app is ready
+      const observer = new MutationObserver(() => {
+        const root = document.getElementById('root');
+        if (root && root.children.length > 0) {
+          document.getElementById('loading').style.display = 'none';
+          observer.disconnect();
+        }
+      });
+      observer.observe(document.getElementById('root'), { childList: true, subtree: true });
+    </script>
+    
+  </body>
+</html>
