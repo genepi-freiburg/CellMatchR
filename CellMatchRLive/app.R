@@ -133,26 +133,25 @@ reduce_data_counts <- function(ref, test, marker_genes = NULL) {
 }
 
 cor_data <- function(reduced_data) {
-  ref_test <- cbind(
-    data.frame(reduced_data$ref_filt),
-    data.frame(reduced_data$test_filt),
-    test_median = reduced_data$test_median
-  )
-  colnames(ref_test)[(ncol(reduced_data$ref_filt) + 1):(ncol(reduced_data$ref_filt) + ncol(reduced_data$test_filt))] <-
-    colnames(reduced_data$test_filt)
+  ref_mat <- as.matrix(reduced_data$ref_filt)
+  test_mat <- as.matrix(reduced_data$test_filt)
+  test_median <- reduced_data$test_median
 
-  rho <- as.data.frame(cor(ref_test, method = "spearman"))
-  rho <- rho[-nrow(rho), ]
+  # Correlate each ref/test column against test columns + median only
+  all_cols <- cbind(ref_mat, test_mat)
+  test_plus_median <- cbind(test_mat, test_median = test_median)
+  rho <- cor(all_cols, test_plus_median, method = "spearman")
 
-  n_ref <- ncol(reduced_data$ref_filt)
-  n_test <- ncol(reduced_data$test_filt)
+  n_ref <- ncol(ref_mat)
+  n_test <- ncol(test_mat)
+  all_names <- c(colnames(ref_mat), colnames(test_mat))
 
-  min_rho <- apply(rho[, (n_ref + 1):(n_ref + n_test + 1)], 1, min)
-  max_rho <- apply(rho[, (n_ref + 1):(n_ref + n_test + 1)], 1, max)
+  min_rho <- apply(rho, 1, min)
+  max_rho <- apply(rho, 1, max)
 
   results <- data.frame(
-    rho = rho$test_median,
-    celltypes = rownames(rho),
+    rho = rho[, "test_median"],
+    celltypes = all_names,
     datatype = ifelse(
       seq_len(nrow(rho)) <= n_ref,
       "Median of sample(s) vs. reference",
@@ -415,12 +414,30 @@ heatmap_fct <- function(reduced_data, cor_results, markers = NULL, genesToPlot =
 # Cell Type Legends - Read from CSV files (generated from Excel)
 # ============================================================================
 
-# Load legend CSV files
+# Pre-load all data at startup (avoids CSV parsing delay during interaction)
 legends <- list(
   "Ransick et al. (mouse, recommended)" = read.csv("data/legend_Ransick_et_al.csv"),
   "Park et al. (mouse)" = read.csv("data/legend_Park_et_al.csv"),
   "Lake et al. (human)" = read.csv("data/legend_Lake_et_al.csv"),
   "Zhang et al. (human)" = read.csv("data/legend_Zhang_et_al.csv")
+)
+
+references <- list(
+  "Ransick et al. (mouse, recommended)" = read.csv("data/Ransick_CPM_2025-08-14.csv"),
+  "Park et al. (mouse)" = read.csv("data/Park_CPM_2025-08-14.csv"),
+  "Lake et al. (human)" = read.csv("data/KPMP_CPM_2025-08-14.csv"),
+  "Zhang et al. (human)" = read.csv("data/Zhang_CPM_2025-08-14.csv")
+)
+
+demo_datasets <- list(
+  "kidney primary cells - select cell types below" = read.csv("data/CPM_Chen_primary_cells.csv"),
+  "HK-2 proximal tubule cell line" = read.csv("data/TPM_HK2_khundmiri.csv"),
+  "mIMCD-3 cell line" = read.csv("data/mIMCD_WT_10d_Westermann.csv")
+)
+
+marker_gene_sets <- list(
+  "kidney marker genes" = read.csv("data/marker_genes_all_2025-07-16.csv"),
+  "tubular marker genes" = read.csv("data/marker_genes_tubular_2025-07-16.csv")
 )
 
 # ============================================================================
@@ -729,12 +746,7 @@ server <- function(input, output, session) {
     if (!is.null(rv_custom_ref$data)) {
       return(rv_custom_ref$data)
     }
-
-    switch(input$ref,
-           "Ransick et al. (mouse, recommended)" = read.csv("data/Ransick_CPM_2025-08-14.csv"),
-           "Park et al. (mouse)" = read.csv("data/Park_CPM_2025-08-14.csv"),
-           "Lake et al. (human)" = read.csv("data/KPMP_CPM_2025-08-14.csv"),
-           "Zhang et al. (human)" = read.csv("data/Zhang_CPM_2025-08-14.csv"))
+    references[[input$ref]]
   })
 
   # Custom reference upload
@@ -763,12 +775,7 @@ server <- function(input, output, session) {
     if (!is.null(rv_sample$data) && input$demo == "--") {
       return(rv_sample$data)
     }
-
-    switch(input$demo,
-           "kidney primary cells - select cell types below" = read.csv("data/CPM_Chen_primary_cells.csv"),
-           "HK-2 proximal tubule cell line" = read.csv("data/TPM_HK2_khundmiri.csv"),
-           "mIMCD-3 cell line" = read.csv("data/mIMCD_WT_10d_Westermann.csv"),
-           NULL)
+    demo_datasets[[input$demo]]
   })
 
   # Gene set
@@ -776,11 +783,7 @@ server <- function(input, output, session) {
     if (!is.null(rv$data)) {
       return(rv$data)
     }
-
-    switch(input$genes,
-           "all genes" = NULL,
-           "kidney marker genes" = read.csv("data/marker_genes_all_2025-07-16.csv"),
-           "tubular marker genes" = read.csv("data/marker_genes_tubular_2025-07-16.csv"))
+    marker_gene_sets[[input$genes]]
   })
 
   # Load gene-celltype assignment for heatmap grouping
