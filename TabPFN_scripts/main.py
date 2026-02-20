@@ -10,7 +10,7 @@ from sklearn.preprocessing import LabelEncoder
 
 from utils import load_data
 
-
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 logger.setLevel("INFO")
 
