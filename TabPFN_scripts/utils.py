@@ -29,12 +29,14 @@ def load_test_data_settings() -> dict:
     test_data = {}
     genelist = None
 
-    for file, datatype in REQUIRED_FILES.items():
+    for file, (datatype, target_col) in REQUIRED_FILES.items():
         if datatype == "reference":
             parquet = pd.read_parquet(os.path.join(DATAFOLDER, file))
             reference_data.append(parquet)
         elif datatype == "test":
-            test_data[file] = pd.read_parquet(os.path.join(DATAFOLDER, file))
+            df = pd.read_parquet(os.path.join(DATAFOLDER, file))
+            df = df.rename(columns={target_col: "meta_target"})
+            test_data[file] = df
         elif datatype == "genelist":
             genelist = pd.read_csv(os.path.join(DATAFOLDER, file), header=None)[0]
 

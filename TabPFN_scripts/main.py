@@ -17,12 +17,12 @@ logger = logging.getLogger(__name__)
 logger.setLevel("INFO")
 
 
-def prepare_X_y(reference_data, test_data, target_col) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+def prepare_X_y(reference_data, test_data) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     meta_columns = [col for col in reference_data.columns if col.startswith("meta_")]
     X_train = reference_data.drop(columns=meta_columns)
-    y_train = reference_data[target_col]
+    y_train = reference_data["meta_target"]
     X_test = test_data.drop(columns=meta_columns)
-    y_test = test_data[target_col]
+    y_test = test_data["meta_target"]
 
     # Drop rows with missing target labels
     train_mask = ~y_train.isna()
@@ -83,12 +83,10 @@ def main():
     logger.info("Loading data...")
     test_settings = load_test_data_settings()
 
-    target_col ="meta_celltype_tubular"
-
     for name, (reference_data, test_data) in test_settings.items():
         logger.info(f"Running on test dataset: {name}")
 
-        X_train, y_train, X_test, y_test = prepare_X_y(reference_data, test_data, target_col)
+        X_train, y_train, X_test, y_test = prepare_X_y(reference_data, test_data)
 
         results = fit_predict_evaluate(X_train, y_train, X_test, y_test)
 

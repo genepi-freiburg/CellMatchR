@@ -3,13 +3,13 @@ from pathlib import Path
 
 
 REQUIRED_FILES = {
-    "KPMP.parquet" : "reference",
-    "Park.parquet" : "reference",
-    "Ransick.parquet" : "reference",
-    "Zhang.parquet" : "reference",
-    "Chen.parquet" : "test",
-    "coarse_celltypes.parquet" : "test",
-    "markergenes_all.csv" : "genelist"
+    "KPMP.parquet":             ("reference", None),
+    "Park.parquet":             ("reference", None),
+    "Ransick.parquet":          ("reference", None),
+    "Zhang.parquet":            ("reference", None),
+    "Chen.parquet":             ("test", "meta_celltype_tubular"),
+    "coarse_celltypes.parquet": ("test", "meta_celltype_coarse"),
+    "markergenes_all.csv":      ("genelist", None),
 }
 
 DATAFOLDER = os.path.join(Path(__file__).parent, 'datasets')
