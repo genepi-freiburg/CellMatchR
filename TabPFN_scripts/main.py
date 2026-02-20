@@ -85,13 +85,18 @@ def main():
 
     all_results = []
     for name, (reference_data, test_data) in test_settings.items():
-        logger.info(f"Running on test dataset: {name}")
+        logger.info("=" * 60)
+        logger.info(f"Test dataset: {name}")
+        logger.info("-" * 60)
 
         X_train, y_train, X_test, y_test = prepare_X_y(reference_data, test_data)
 
         results = fit_predict_evaluate(X_train, y_train, X_test, y_test)
         all_results.append(results)
 
+    logger.info("=" * 60)
+    logger.info("WEIGHTED AVERAGE ACCURACY")
+    logger.info("-" * 60)
     for model in ["tabpfn", "xgb", "rf"]:
         total_correct = sum(r[model] * r["n_samples"] for r in all_results)
         total_samples = sum(r["n_samples"] for r in all_results)

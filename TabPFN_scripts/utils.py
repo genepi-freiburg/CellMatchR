@@ -49,10 +49,10 @@ def load_test_data_settings() -> dict:
         test_genes = set(test_df.columns) - set(metadata_columns)
         gene_selection = sorted(reference_genes & test_genes & set(genelist))
         keep_cols = metadata_columns + gene_selection
-        reference_data_subset = reference_data[keep_cols]
-        test_df_subset = test_df[keep_cols]
-        reference_data_subset.rename(columns={target_col: "meta_target"}, inplace=True)
-        test_df_subset.rename(columns={target_col: "meta_target"}, inplace=True)
+        reference_data_subset = reference_data[keep_cols].copy()
+        test_df_subset = test_df[keep_cols].copy()
+        reference_data_subset = reference_data_subset.rename(columns={target_col: "meta_target"})
+        test_df_subset = test_df_subset.rename(columns={target_col: "meta_target"})
         datasets[name] = (reference_data_subset, test_df_subset)
 
     return datasets
