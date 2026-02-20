@@ -35,8 +35,7 @@ def load_test_data_settings() -> dict:
             reference_data.append(parquet)
         elif datatype == "test":
             df = pd.read_parquet(os.path.join(DATAFOLDER, file))
-            df = df.rename(columns={target_col: "meta_target"})
-            test_data[file] = df
+            test_data[file] = (df, target_col)
         elif datatype == "genelist":
             genelist = pd.read_csv(os.path.join(DATAFOLDER, file), header=None)[0]
 
@@ -46,11 +45,15 @@ def load_test_data_settings() -> dict:
 
     datasets = {}
     # For each test dataset, find the intersection of genes with the reference and genelist, and keep only those columns
-    for name, test_df in test_data.items():
+    for name, (test_df, target_col) in test_data.items():
         test_genes = set(test_df.columns) - set(metadata_columns)
         gene_selection = sorted(reference_genes & test_genes & set(genelist))
         keep_cols = metadata_columns + gene_selection
-        datasets[name] = (reference_data[keep_cols], test_df[keep_cols])
+        reference_data_subset = reference_data[keep_cols]
+        test_df_subset = test_df[keep_cols]
+        reference_data_subset.rename(columns={target_col: "meta_target"}, inplace=True)
+        test_df_subset.rename(columns={target_col: "meta_target"}, inplace=True)
+        datasets[name] = (reference_data_subset, test_df_subset)
 
     return datasets
 
