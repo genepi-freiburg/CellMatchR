@@ -8,6 +8,7 @@ REQUIRED_FILES = {
     "Ransick.parquet" : "reference",
     "Zhang.parquet" : "reference",
     "Chen.parquet" : "test",
+    "coarse_celltypes.parquet" : "test",
     "markergenes_all.csv" : "genelist"
 }
 

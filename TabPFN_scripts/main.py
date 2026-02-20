@@ -5,45 +5,39 @@ import logging
 from time import time
 from torch.cuda import is_available
 import numpy as np
+from typing import Tuple
 
 from sklearn.preprocessing import LabelEncoder
 
 
-from utils import load_data
+from utils import load_test_data_settings
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
 logger = logging.getLogger(__name__)
 logger.setLevel("INFO")
 
-def main():
-    logger.info("Loading data...")
-    reference_data, test_data = load_data()
 
+def prepare_X_y(reference_data, test_data, target_col) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     meta_columns = [col for col in reference_data.columns if col.startswith("meta_")]
-    target_col ="meta_celltype_tubular"
-
     X_train = reference_data.drop(columns=meta_columns)
     y_train = reference_data[target_col]
-
-    # Drop rows with missing target labels in training data
-    train_mask = ~y_train.isna()
-    X_train = X_train[train_mask]
-    y_train = y_train[train_mask]
-
-    X_train = X_train.apply(lambda x: np.log1p(x))
-    
     X_test = test_data.drop(columns=meta_columns)
     y_test = test_data[target_col]
 
+    # Drop rows with missing target labels
+    train_mask = ~y_train.isna()
+    X_train = X_train[train_mask]
+    y_train = y_train[train_mask]
     test_mask = ~y_test.isna()
     X_test = X_test[test_mask]
     y_test = y_test[test_mask]
 
+    # Log-transform the data
+    X_train = X_train.apply(lambda x: np.log1p(x))
     X_test = X_test.apply(lambda x: np.log1p(x))
+    return X_train, y_train, X_test, y_test
 
-    logger.info(f"Training models on {X_train.shape[0]} samples and {X_train.shape[1]} features...")    
-    logger.info(f"Evaluating models on {X_test.shape[0]} samples and {X_test.shape[1]} features...")
-
+def fit_predict_evaluate(X_train, y_train, X_test, y_test):
     # Train TabPFN
     logger.info("Training TabPFN...")
     tabpfn_clf = TabPFNClassifier(device="cuda" if is_available() else "cpu")
@@ -83,6 +77,26 @@ def main():
     logger.info(f"XGBoost Accuracy: {xgb_acc:.4f}")
     logger.info(f"Random Forest Accuracy: {rf_acc:.4f}")
 
+    return {"tabpfn": tabpfn_acc, "xgb": xgb_acc, "rf": rf_acc, "n_samples": len(y_test)}
+
+def main():
+    logger.info("Loading data...")
+    test_settings = load_test_data_settings()
+
+    target_col ="meta_celltype_tubular"
+
+    for name, (reference_data, test_data) in test_settings.items():
+        logger.info(f"Running on test dataset: {name}")
+
+        X_train, y_train, X_test, y_test = prepare_X_y(reference_data, test_data, target_col)
+
+        results = fit_predict_evaluate(X_train, y_train, X_test, y_test)
+
+    for model in ["tabpfn", "xgb", "rf"]:
+        total_correct = sum(r[model] * r["n_samples"] for r in results)
+        total_samples = sum(r["n_samples"] for r in results)
+        weighted_avg = total_correct / total_samples
+        logger.info(f"{model}: {weighted_avg:.4f}")
 
 if __name__ == "__main__":
     main()

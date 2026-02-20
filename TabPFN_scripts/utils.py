@@ -23,37 +23,34 @@ def ensure_required_files():
         download_huggingface_dataset(missing)
 
 
-def load_data():
+def load_test_data_settings() -> dict:
     ensure_required_files()
-    
     reference_data = []
+    test_data = {}
+    genelist = None
+
     for file, datatype in REQUIRED_FILES.items():
-        
         if datatype == "reference":
             parquet = pd.read_parquet(os.path.join(DATAFOLDER, file))
             reference_data.append(parquet)
-            
         elif datatype == "test":
-            test_data = pd.read_parquet(os.path.join(DATAFOLDER, file))
-
+            test_data[file] = pd.read_parquet(os.path.join(DATAFOLDER, file))
         elif datatype == "genelist":
             genelist = pd.read_csv(os.path.join(DATAFOLDER, file), header=None)[0]
 
-    
     reference_data = pd.concat(reference_data, axis=0, ignore_index=True)
-
     metadata_columns = [meta for meta in reference_data.columns if meta.startswith("meta_")]
-
-    # get "gene universe": check overlap of genes between test, reference and genelist
     reference_genes = set(reference_data.columns) - set(metadata_columns)
-    test_genes = set(test_data.columns) - set(metadata_columns)
 
-    gene_selection = list(reference_genes & test_genes & set(genelist))
+    datasets = {}
+    # For each test dataset, find the intersection of genes with the reference and genelist, and keep only those columns
+    for name, test_df in test_data.items():
+        test_genes = set(test_df.columns) - set(metadata_columns)
+        gene_selection = sorted(reference_genes & test_genes & set(genelist))
+        keep_cols = metadata_columns + gene_selection
+        datasets[name] = (reference_data[keep_cols], test_df[keep_cols])
 
-    reference_data = reference_data[metadata_columns + gene_selection]
-    test_data = test_data[metadata_columns + gene_selection]
-        
-    return reference_data, test_data
+    return datasets
 
 
 def download_huggingface_dataset(missing):
