@@ -40,7 +40,8 @@ def prepare_X_y(reference_data, test_data) -> Tuple[np.ndarray, np.ndarray, np.n
 def fit_predict_evaluate(X_train, y_train, X_test, y_test):
     # Train TabPFN
     logger.info("Training TabPFN...")
-    tabpfn_clf = TabPFNClassifier(device="cuda" if is_available() else "cpu")
+    tabpfn_clf = TabPFNClassifier(device="cuda" if is_available() else "cpu",
+                                  ignore_pretraining_limits=True) # Ignoring limits for local CPU training
     start_time = time()
     tabpfn_clf.fit(X_train.values, y_train.values)
     logger.info(f"TabPFN training time: {time() - start_time:.2f} seconds")
@@ -64,9 +65,15 @@ def fit_predict_evaluate(X_train, y_train, X_test, y_test):
     logger.info(f"Random Forest training time: {time() - start_time:.2f} seconds")
 
     # Evaluate on test set
+    start_time = time()
     tabpfn_preds = tabpfn_clf.predict(X_test.values)
+    logger.info(f"TabPFN prediction time: {time() - start_time:.2f} seconds")
+    start_time = time()
     xgb_preds = xgb_clf.predict(X_test)
+    logger.info(f"XGBoost prediction time: {time() - start_time:.2f} seconds")
+    start_time = time()
     rf_preds = rf_clf.predict(X_test)
+    logger.info(f"Random Forest prediction time: {time() - start_time:.2f} seconds")
 
     # Calculate and print accuracies
     tabpfn_acc = (tabpfn_preds == y_test.values).mean()
