@@ -5,6 +5,9 @@ import logging
 from time import time
 from torch.cuda import is_available
 
+from sklearn.preprocessing import LabelEncoder
+
+
 from utils import load_data
 
 
@@ -42,9 +45,13 @@ def main():
 
     # Train XGBoost
     logger.info("Training XGBoost...")
+    # Encode labels for XGBoost
+    le = LabelEncoder()
+    y_train_encoded = le.fit_transform(y_train)
+    y_test_encoded = le.transform(y_test)
     xgb_clf = XGBClassifier()
     start_time = time()
-    xgb_clf.fit(X_train, y_train)
+    xgb_clf.fit(X_train, y_train_encoded)
     logger.info(f"XGBoost training time: {time() - start_time:.2f} seconds")
 
     # Train Random Forest
@@ -61,8 +68,8 @@ def main():
 
     # Calculate and print accuracies
     tabpfn_acc = (tabpfn_preds == y_test.values).mean()
-    xgb_acc = (xgb_preds == y_test).mean()
-    rf_acc = (rf_preds == y_test).mean()
+    xgb_acc = (xgb_preds == y_test_encoded).mean()
+    rf_acc = (rf_preds == y_test.values).mean()
 
     logger.info(f"TabPFN Accuracy: {tabpfn_acc:.4f}")
     logger.info(f"XGBoost Accuracy: {xgb_acc:.4f}")
