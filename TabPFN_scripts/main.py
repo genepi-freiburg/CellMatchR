@@ -83,16 +83,18 @@ def main():
     logger.info("Loading data...")
     test_settings = load_test_data_settings()
 
+    all_results = []
     for name, (reference_data, test_data) in test_settings.items():
         logger.info(f"Running on test dataset: {name}")
 
         X_train, y_train, X_test, y_test = prepare_X_y(reference_data, test_data)
 
         results = fit_predict_evaluate(X_train, y_train, X_test, y_test)
+        all_results.append(results)
 
     for model in ["tabpfn", "xgb", "rf"]:
-        total_correct = sum(r[model] * r["n_samples"] for r in results)
-        total_samples = sum(r["n_samples"] for r in results)
+        total_correct = sum(r[model] * r["n_samples"] for r in all_results)
+        total_samples = sum(r["n_samples"] for r in all_results)
         weighted_avg = total_correct / total_samples
         logger.info(f"{model}: {weighted_avg:.4f}")
 
