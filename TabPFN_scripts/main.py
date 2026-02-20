@@ -4,6 +4,7 @@ from tabpfn import TabPFNClassifier
 import logging
 from time import time
 from torch.cuda import is_available
+import numpy as np
 
 from sklearn.preprocessing import LabelEncoder
 
@@ -29,11 +30,18 @@ def main():
     X_train = X_train[train_mask]
     y_train = y_train[train_mask]
 
-    logger.info(f"Training models on {X_train.shape[0]} samples and {X_train.shape[1]} features...")
-
+    X_train = X_train.apply(lambda x: np.log1p(x))
+    
     X_test = test_data.drop(columns=meta_columns)
     y_test = test_data[target_col]
 
+    test_mask = ~y_test.isna()
+    X_test = X_test[test_mask]
+    y_test = y_test[test_mask]
+
+    X_test = X_test.apply(lambda x: np.log1p(x))
+
+    logger.info(f"Training models on {X_train.shape[0]} samples and {X_train.shape[1]} features...")    
     logger.info(f"Evaluating models on {X_test.shape[0]} samples and {X_test.shape[1]} features...")
 
     # Train TabPFN
