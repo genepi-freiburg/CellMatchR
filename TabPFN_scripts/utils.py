@@ -54,7 +54,7 @@ def load_test_data_settings(user_reference_datasets=None,
         if datatype == "reference":
             parquet = pd.read_parquet(os.path.join(DATAFOLDER, file))
             reference_data.append(parquet)
-        elif datatype == "test":
+        elif datatype == "test" and user_csv_path is None:
             df = pd.read_parquet(os.path.join(DATAFOLDER, file))
             test_data[file] = (df, target_col)
         elif datatype == "genelist":
@@ -83,6 +83,7 @@ def load_test_data_settings(user_reference_datasets=None,
             reference_data_subset = reference_data_subset.rename(columns={target_col: "meta_target"})
             test_df_subset = test_df_subset.rename(columns={target_col: "meta_target"})
         else:
+            reference_data_subset = reference_data_subset.rename(columns={"meta_celltype_tubular": "meta_target"})
             test_df_subset["meta_target"] = float("nan")
         datasets[name.removesuffix(".parquet")] = (reference_data_subset, test_df_subset)
 
@@ -92,7 +93,7 @@ def prepare_X_y(reference_data, test_data) -> Tuple[pd.DataFrame, pd.Series, pd.
     meta_columns = [col for col in reference_data.columns if col.startswith("meta_")]
     X_train = reference_data.drop(columns=meta_columns)
     y_train = reference_data["meta_target"]
-    X_test = test_data.drop(columns=meta_columns)
+    X_test = test_data.drop(columns=meta_columns, errors="ignore")
     y_test = test_data["meta_target"]
 
     # Drop rows with missing target labels

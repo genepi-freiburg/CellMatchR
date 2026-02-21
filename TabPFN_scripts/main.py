@@ -36,8 +36,7 @@ def plot_probabilities(probs: pd.DataFrame, dataset_name: str):
         fig.tight_layout()
         fig.savefig(f"results/probabilities_{dataset_name}_part{plot + 1}.png")
         plt.close(fig)
-
-        
+      
 
 def fit_predict_evaluate(X_train, y_train, X_test, y_test):
     # Train TabPFN
@@ -93,6 +92,7 @@ def main():
         logger.info("=" * 60)
         logger.info(f"Test dataset: {name}")
         logger.info("-" * 60)
+        logger.info(f"Test data: {test_data.shape[0]} cells, {test_data.shape[1]} genes")
 
         X_train, y_train, X_test, y_test = prepare_X_y(reference_data, test_data)
 
