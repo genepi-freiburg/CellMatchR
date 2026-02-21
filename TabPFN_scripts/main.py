@@ -1,21 +1,19 @@
-
-from tabpfn import TabPFNClassifier
-import logging
-from time import time
-from torch.cuda import is_available
-import numpy as np
-from typing import Tuple
 import argparse
-import os 
-import pandas as pd
+import logging
+import os
+from time import time
+from typing import Tuple
+
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from tabpfn import TabPFNClassifier
+from torch.cuda import is_available
 
-
-from utils import load_test_data_settings
+from utils import load_test_data_settings, prepare_X_y
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
 logger = logging.getLogger(__name__)
-logger.setLevel("INFO")
 
 
 def plot_probabilities(probs: pd.DataFrame, dataset_name: str):
@@ -41,26 +39,6 @@ def plot_probabilities(probs: pd.DataFrame, dataset_name: str):
 
         
 
-def prepare_X_y(reference_data, test_data) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    meta_columns = [col for col in reference_data.columns if col.startswith("meta_")]
-    X_train = reference_data.drop(columns=meta_columns)
-    y_train = reference_data["meta_target"]
-    X_test = test_data.drop(columns=meta_columns)
-    y_test = test_data["meta_target"]
-
-    # Drop rows with missing target labels
-    train_mask = ~y_train.isna()
-    X_train = X_train[train_mask]
-    y_train = y_train[train_mask]
-    test_mask = ~y_test.isna()
-    X_test = X_test[test_mask]
-    y_test = y_test[test_mask]
-
-    # Log-transform the data
-    X_train = X_train.apply(lambda x: np.log1p(x))
-    X_test = X_test.apply(lambda x: np.log1p(x))
-    return X_train, y_train, X_test, y_test
-
 def fit_predict_evaluate(X_train, y_train, X_test, y_test):
     # Train TabPFN
     logger.info("Training TabPFN...")
@@ -81,13 +59,13 @@ def fit_predict_evaluate(X_train, y_train, X_test, y_test):
     # Calculate and print accuracies
     tabpfn_preds = tabpfn_probs.idxmax(axis=1)
 
+    tabpfn_acc = None
     if y_test is not None:
         tabpfn_acc = (tabpfn_preds == y_test).mean()
-
-    logger.info(f"TabPFN Accuracy: {tabpfn_acc:.4f}")
+        logger.info(f"TabPFN Accuracy: {tabpfn_acc:.4f}")
 
     return {
-        "acc": tabpfn_acc if y_test is not None else None,
+        "acc": tabpfn_acc,
         "n_samples": len(y_test) if y_test is not None else 0,
         "preds": tabpfn_preds,
         "probs": tabpfn_probs
@@ -99,12 +77,14 @@ def main():
 
     parser.add_argument("--reference_datasets", nargs="+", default=None,
                         help="List of reference datasets to use (default: all)")
-    
+    parser.add_argument("--csv", type=str, default=None,
+                        help="Path to a CSV file with cells as rows and genes as columns (gene names as headers)")
+
     args = parser.parse_args()
 
 
     logger.info("Loading data...")
-    test_settings = load_test_data_settings(args.reference_datasets)
+    test_settings = load_test_data_settings(args.reference_datasets, user_csv_path=args.csv)
 
     os.makedirs("results", exist_ok=True)
 
@@ -121,13 +101,13 @@ def main():
         plot_probabilities(results["probs"], name)
         logger.info(f"Saved probability plot for {name}.")
 
-        pd.DataFrame(results["probs"]).to_csv(f"results/results_{name}.csv", index=False)
+        results["probs"].to_csv(f"results/results_{name}.csv", index=False)
         logger.info(f"Saved probabilities for {name} to CSV.")
 
         all_results.append(results)
 
-    # This can only be calcualted it we have true labels for the test set
-    if all_results[0]["acc"] is not None:
+    # This can only be calculated if we have true labels for the test set
+    if any(r["acc"] is not None for r in all_results):
         logger.info("=" * 60)
         logger.info("WEIGHTED AVERAGE ACCURACY")
         logger.info("-" * 60)

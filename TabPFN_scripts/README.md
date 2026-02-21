@@ -1,12 +1,12 @@
 # CellMatchR – TabPFN
 
-Minimal setup to run three classifiers TabPFN, XGBoost, and Random Forest trained on four refernce transcriptomic kidney profile  datasets. Reference datasets are hosted as HugginFace [dataset](https://huggingface.co/datasets/samuelboehm/cellmatchr) repository.
+Minimal setup to run TabPFN trained on four reference transcriptomic kidney profile datasets. Reference datasets are hosted as a HuggingFace [dataset](https://huggingface.co/datasets/samuelboehm/cellmatchr) repository.
 
 ## What this code does:
 
 1. Downloads reference and test datasets together with a markergene selection automatically from HuggingFace on first run.
 2. Selects the intersection of marker genes shared between reference and test data. Marker genes need to be shared between at least one reference and the test dataset.
-3. Log-transforms expression values and trains all three classifiers.
+3. Log-transforms expression values and trains TabPFN.
 4. Reports per-dataset and weighted-average accuracy.
 
 ## Setup

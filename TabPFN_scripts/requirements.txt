@@ -2,6 +2,6 @@ numpy
 pandas
 huggingface_hub
 pyarrow
-xgboost
 scikit-learn
 tabpfn==6.4.1
+matplotlib

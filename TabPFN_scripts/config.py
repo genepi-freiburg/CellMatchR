@@ -8,7 +8,7 @@ REQUIRED_FILES = {
     "Ransick.parquet":          ("reference", None),
     "Zhang.parquet":            ("reference", None),
     "Chen.parquet":             ("test", "meta_celltype_tubular"),
-    "cortex_medulla.parquet": ("test", "meta_celltype_coarse"),
+    "cortex_medulla.parquet":   ("test", "meta_celltype_coarse"),
     "markergenes_all.csv":      ("genelist", None),
 }
 
