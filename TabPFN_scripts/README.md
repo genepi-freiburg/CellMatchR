@@ -29,7 +29,10 @@ python main.py --csv /path/to/your/data.csv
 
 Gene column headers must be gene symbols (case-insensitive, automatically uppercased). The CSV should contain only raw expression counts — one row per cell, one column per gene. When a CSV is provided, the built-in test datasets are skipped and only your data is classified.
 
-Optionally, add a `meta_target` column with a cell type label per cell. If present, an accuracy is calculated and the labels are used as titles in the output probability plots. Useful for verifying predictions against expected annotations.
+Optionally, add a `meta_target` column with a cell type label per cell to your csv. If present, an accuracy is calculated and the labels are used as titles in the output probability plots. Useful for verifying predictions against expected annotations.
+
+Note that our model is trained on the following cell types: CD, CNT, DCT, EC, ENDO, FIB, IMM, LOH, POD, PT. If your `meta_target` column contains other cell type labels, the reported accuracy will not be correct, but the labels will still be used for visualization purposes.
+
 
 Optionally restrict which reference datasets to train on:
 ```bash
