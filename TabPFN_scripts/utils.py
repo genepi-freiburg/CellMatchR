@@ -23,13 +23,44 @@ def ensure_required_files():
         download_huggingface_dataset(missing)
 
 
-def load_test_data_settings() -> dict:
+def load_test_data_settings(user_reference_datasets=None,
+                            user_test_datasets=None) -> dict:
     ensure_required_files()
     reference_data = []
     test_data = {}
     genelist = None
 
-    for file, (datatype, target_col) in REQUIRED_FILES.items():
+    #  Select reference datasets based on CLI argument
+    required_files = REQUIRED_FILES
+
+    if user_reference_datasets is not None:
+        available_refs = {file.removesuffix(".parquet") for file, (datatype, _) in REQUIRED_FILES.items() if datatype == "reference"}
+        unknown_refs = set(user_reference_datasets) - available_refs
+        if unknown_refs:
+            logger.error(f"Unknown reference dataset(s): {', '.join(sorted(unknown_refs))}")
+            logger.info(f"Available: {', '.join(sorted(available_refs))}")
+            exit(1)
+
+        required_files = {
+            file: (datatype, target_col) 
+            for file, (datatype, target_col) in REQUIRED_FILES.items() 
+            if not (datatype == "reference" and file.removesuffix(".parquet") not in user_reference_datasets)
+        }
+
+    if user_test_datasets is not None:
+        df = pd.read_csv(os.path.join(DATAFOLDER, user_test_datasets), header=None)[0]
+        logger.info(f"Using custom test datasets. Found {df.shape[0]} entries to match.")
+        
+        required_files = {
+            file: (datatype, target_col)
+            for file, (datatype, target_col) in required_files.items()
+            if not (datatype == "test" and file.removesuffix(".parquet") not in df.values)
+        }
+            
+    
+    logger.info(f"Using reference datasets: {', '.join(sorted(set(file.removesuffix('.parquet') for file, (datatype, _) in required_files.items() if datatype == 'reference')))}")
+
+    for file, (datatype, target_col) in required_files.items():
         if datatype == "reference":
             parquet = pd.read_parquet(os.path.join(DATAFOLDER, file))
             reference_data.append(parquet)
@@ -53,7 +84,7 @@ def load_test_data_settings() -> dict:
         test_df_subset = test_df[keep_cols].copy()
         reference_data_subset = reference_data_subset.rename(columns={target_col: "meta_target"})
         test_df_subset = test_df_subset.rename(columns={target_col: "meta_target"})
-        datasets[name] = (reference_data_subset, test_df_subset)
+        datasets[name.removesuffix(".parquet")] = (reference_data_subset, test_df_subset)
 
     return datasets
 
