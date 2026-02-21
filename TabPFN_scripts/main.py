@@ -92,9 +92,9 @@ def main():
         logger.info("=" * 60)
         logger.info(f"Test dataset: {name}")
         logger.info("-" * 60)
-        logger.info(f"Test data: {test_data.shape[0]} cells, {test_data.shape[1]} genes")
-
+        
         X_train, y_train, X_test, y_test = prepare_X_y(reference_data, test_data)
+        logger.info(f"After gene selection {X_test.shape[1]} genes remain for matching.")
 
         results = fit_predict_evaluate(X_train, y_train, X_test, y_test)
 
