@@ -27,7 +27,9 @@ python main.py
 python main.py --csv /path/to/your/data.csv
 ```
 
-Gene column headers must be gene symbols (case-insensitive, automatically uppercased). The CSV should not contain any other columns, only raw expression counts in counts per million. When a CSV is provided, the built-in test datasets are skipped and only your data is classified.
+Gene column headers must be gene symbols (case-insensitive, automatically uppercased). The CSV should contain only raw expression counts — one row per cell, one column per gene. When a CSV is provided, the built-in test datasets are skipped and only your data is classified.
+
+Optionally, add a `meta_target` column with a cell type label per cell. If present, an accuracy is calculated and the labels are used as titles in the output probability plots. Useful for verifying predictions against expected annotations.
 
 Optionally restrict which reference datasets to train on:
 ```bash

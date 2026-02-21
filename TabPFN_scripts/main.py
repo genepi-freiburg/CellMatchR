@@ -16,7 +16,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 
-def plot_probabilities(probs: pd.DataFrame, dataset_name: str):
+def plot_probabilities(probs: pd.DataFrame, dataset_name: str, cell_labels: pd.Series | None = None):
     n_total = len(probs)
     n_plots = (n_total + 8) // 9
 
@@ -27,7 +27,7 @@ def plot_probabilities(probs: pd.DataFrame, dataset_name: str):
         for ax, (idx, row) in zip(axes.flat, batch.iterrows()):
             row.plot.bar(ax=ax)
             ax.set_ylabel("Probability")
-            ax.set_title(f"Sample {idx}")
+            ax.set_title(cell_labels.loc[idx] if cell_labels is not None else f"Sample {idx}")
 
         # Hide unused subplots
         for ax in axes.flat[len(batch):]:
@@ -98,7 +98,7 @@ def main():
 
         results = fit_predict_evaluate(X_train, y_train, X_test, y_test)
 
-        plot_probabilities(results["probs"], name)
+        plot_probabilities(results["probs"], name, cell_labels=y_test)
         logger.info(f"Saved probability plot for {name}.")
 
         results["probs"].to_csv(f"results/results_{name}.csv", index=False)

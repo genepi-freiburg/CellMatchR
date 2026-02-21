@@ -62,7 +62,7 @@ def load_test_data_settings(user_reference_datasets=None,
 
     if user_csv_path is not None:
         csv_df = pd.read_csv(user_csv_path)
-        csv_df.columns = csv_df.columns.str.upper()
+        csv_df.columns = [col if col.lower().startswith("meta_") else col.upper() for col in csv_df.columns]
         csv_name = os.path.splitext(os.path.basename(user_csv_path))[0]
         test_data[csv_name] = (csv_df, None)
         logger.info(f"Loaded user CSV '{csv_name}' with {csv_df.shape[0]} cells and {csv_df.shape[1]} genes.")
@@ -84,7 +84,7 @@ def load_test_data_settings(user_reference_datasets=None,
             test_df_subset = test_df_subset.rename(columns={target_col: "meta_target"})
         else:
             reference_data_subset = reference_data_subset.rename(columns={"meta_celltype_tubular": "meta_target"})
-            test_df_subset["meta_target"] = float("nan")
+            test_df_subset["meta_target"] = test_df["meta_target"].values if "meta_target" in test_df.columns else float("nan")
         datasets[name.removesuffix(".parquet")] = (reference_data_subset, test_df_subset)
 
     return datasets
