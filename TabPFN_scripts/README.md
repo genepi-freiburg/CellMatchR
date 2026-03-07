@@ -62,7 +62,7 @@ python3 -m venv ~/venvs/cellmatchr
 ```bash
 source ~/venvs/cellmatchr/bin/activate
 ```
-You will see `(cellmatchr)` appear in your prompt. **Steps 1–5 only need to be done once.** From now on, just start WSL and run this activation command before using the tool.
+You will see `(cellmatchr)` appear in your prompt. **Steps 1–5 only need to be done once.** From now on, just start WSL and run this activation command before using the tool. **Steps 7 & 8  only need to be done once for a given virtual environment.**
 
 #### 7. Install dependencies
 Navigate to your scripts folder (Windows drives are accessible under `/mnt/`):
