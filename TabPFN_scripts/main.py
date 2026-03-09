@@ -10,7 +10,7 @@ import pandas as pd
 from tabpfn import TabPFNClassifier
 from torch.cuda import is_available
 
-from utils import load_test_data_settings, prepare_X_y
+from utils import load_data, prepare_X_y
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -83,7 +83,7 @@ def main():
 
 
     logger.info("Loading data...")
-    test_settings = load_test_data_settings(args.reference_datasets, user_csv_path=args.csv)
+    test_settings = load_data(args.reference_datasets, user_csv_path=args.csv)
 
     os.makedirs("results", exist_ok=True)
 
@@ -116,7 +116,6 @@ def main():
         weighted_avg = total_correct / total_samples if total_samples > 0 else 0
         logger.info(f"TabPFN: {weighted_avg:.4f}")
 
-   
 
 if __name__ == "__main__":
     main()
