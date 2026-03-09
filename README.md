@@ -6,12 +6,16 @@ CellMatchR is a computational framework for matching bulk RNA-seq data to single
 
 CellMatchR was generated to help researchers classify and annotate bulk RNA-seq samples from kidney cell lines by leveraging curated kidney scRNA-seq reference atlases, using both correlation-based approaches and machine learning (TabPFN).
 
+---
+
 ## Contents
 
 | Folder | Description |
 |--------|-------------|
 | `shinyApp/` | Interactive Shiny application for bulk-to-single-cell matching |
 | `TabPFN/` | User manual and scripts for TabPFN-based cell type classification |
+
+---
 
 ## Shiny Application
 
@@ -30,6 +34,8 @@ The CellMatchR Shiny app allows users to upload bulk RNA-seq data and match it a
 - comma-separated (.csv) or excel (.xlsx) expression matrix
 - Rows: genes (HGNC symbols) in column "Gene.names", Columns: samples
 
+---
+
 ## TabPFN User Manual
 
 The `TabPFN/` folder contains a step-by-step guide to implement TabPFN for cell type matching of bulk RNA-seq data, including:
@@ -40,6 +46,8 @@ The `TabPFN/` folder contains a step-by-step guide to implement TabPFN for cell 
 - Interpreting and exporting results
 
 TabPFN is a transformer-based model for tabular data classification and provides a complementary machine learning approach to correlation-based matching.
+
+---
 
 ## Requirements
 
