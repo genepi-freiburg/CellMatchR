@@ -1,0 +1,3 @@
+TabPFN_scripts/datasets/*
+__pycache__/
+TabPFN_scripts/results/*
