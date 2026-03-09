@@ -201,6 +201,9 @@ Optionally restrict which reference datasets to train on:
 python main.py --csv /path/to/your/data.csv --reference_datasets KPMP Park
 ```
 
+### Runtime
+Runtime varies depending on hardware and dataset size. If a GPU is available, predictions are typically fast (seconds to low minutes). When running on CPU only, runtimes of >10 minutes are possible for larger datasets. The tool automatically uses a GPU if detected, and falls back to CPU otherwise.
+
 ---
 
 ## Input data format
