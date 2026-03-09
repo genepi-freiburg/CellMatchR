@@ -6,7 +6,7 @@ Minimal setup to run TabPFN trained on four reference transcriptomic kidney prof
 
 1. Downloads reference and test datasets together with a marker gene selection automatically from HuggingFace on first run.
 2. Selects the intersection of marker genes shared between reference and test data. Marker genes need to be shared between at least one reference and the test dataset.
-3. Computes log(CPM) values from raw counts and trains TabPFN.
+3. Computes log(CPM + 1) values from raw counts and trains TabPFN.
 4. Reports cell type similarity probabilities (figures and tables as csv).
 5. Reports per-dataset and weighted-average accuracy (when true labels are available).
 
