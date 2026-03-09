@@ -1,10 +1,6 @@
 #-----------------------------------------------#
 #  Heatmap Code - ComplexHeatmap Version
 #----------------------------------------------#
-
-library(dplyr)
-library(ComplexHeatmap)
-
 # Source the ComplexHeatmap function
 source("functions/heatmap_complexheatmap.R")
 

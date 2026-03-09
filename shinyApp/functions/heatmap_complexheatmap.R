@@ -1,8 +1,3 @@
-library(ComplexHeatmap)
-library(circlize)
-library(viridis)
-library(dplyr)
-
 # function to flexibly adapt height of heatmap to number of genes
 calculate_heatmap_height <- function(n_genes) {
   base_height <- 200

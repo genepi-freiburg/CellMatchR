@@ -1,16 +1,5 @@
 # reduce_data, Shiny
 
-
-library(openxlsx)
-library(dplyr)
-library("ggfortify")
-library("ggplot2")
-library("ggrepel")
-library("ggpubr")
-library("ggdendro")
-library("gridExtra")
-
-
 reduce_data <- function(ref, test, marker_genes = NULL){
  
   test$Gene.names <- toupper(test$Gene.names)

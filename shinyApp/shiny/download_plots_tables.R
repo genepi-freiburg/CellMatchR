@@ -2,8 +2,6 @@
 # Download
 #-----------------------------------------------------------#
 
-library(writexl)
-
 # Download graph and table from Spearman's correlation
 
 output$DL_cor_plot <- downloadHandler(
