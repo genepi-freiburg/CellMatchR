@@ -63,7 +63,7 @@ ui <- dashboardPage(
                                                     <li><b>Step 3</b>: Select the reference publication, gene set and cell types you want to use</li>
                                                     </ul>"),
                                 br(),
-                               p("CellMatchR will run rank-based Spearman's correlations and Euclidean distance between your sample cells and reference cell types and
+                               p("CellMatchR will run rank-based Spearman's correlations between your sample cells and reference cell types and
                               display the most similar cell type on top."),
                               p("Additionally, CellMatchR displays a heatmap to showcase gene expression profiles of selected cell types.")),
                          column(3,
@@ -99,7 +99,7 @@ ui <- dashboardPage(
                            selectInput("demo", 
                                        label = tags$label("... or try out CellMatchR with our datasets:", 
                                                           actionButton("help_demo", label = NULL,icon = icon("question-circle"), style = "font-size: 11px; border: none; background-color: transparent;")),
-                                       choices = c("--","kidney primary cells - select cell types below", "HK-2 proximal tubule cell line", "mIMCD-3 cell line"))),
+                                       choices = c("--","kidney primary cells - select cell types below", "HK-2 proximal tubule cell line"))),
                   ),
                   fluidRow(
                     column(12,
@@ -183,10 +183,10 @@ ui <- dashboardPage(
                             Single-cell transcriptomics of the mouse kidney reveals potential cellular targets of kidney disease. Science 360, 758–763. <a>https://doi.org/10.1126/science.aar2131</a></em></p>"),
                            hr(),
                            h4("Kidney Precision Medicine Project (KPMP)"),
-                           HTML("<p>Droplet-based single cell RNA sequencing dataset from human kidney generated with Chromium v3 platform. Only the subset of cell from healthy donors (n = 26) was used.
+                           HTML("<p>Droplet-based single-cell RNA sequencing based on 10x Genomics Chromium platform with Illumina Hi-Seq sequencing. 28 kidney biopsies were derived from 26 healthy human donors.
                                   77 cell cluster were identified, including epithelial, endothelial, stromal, immune and neural cell types. Only canonical cell types were used for analysis. </p>
                                   <p>The h5Seurat file was downloaded from Kidney Cell Atlas website kpmp.org repository section on 2025/04/08. Cell type names and abbreviations were adapted from supplementary table 4 of <em>Lake et al.</em>.</p>
-                                  <p>References: <br><em>https://www.kpmp.org accessed on 2023/11/30</em><br>
+                                  <p>References: <br><em>https://www.kpmp.org</em><br>
                                   <p><em>Lake et al., 2023. An atlas of healthy and injured cell states and niches 
                                   in the human kidney. Nature 619, 585–594.</em></p>"),
                            hr(),
@@ -208,26 +208,15 @@ ui <- dashboardPage(
                          style = "display: block; text-align: center;",
                          tags$img(src = 'logo_about.png', height = '80')),
                        hr(),
-                       h3("CellMatchR: Comparison of matching strategies", style = "color: #0072B2;"),
+                       h3("CellMatchR Publication", style = "color: #0072B2;"),
                        br(),
                        fluidRow(
                          column(6,
-                          HTML("<p>CellMatchR statistically compares gene expression profiles derived from RNA sequencing data of whole tissues, primary cells and cell lines of the kidney to single cell and single nucleus RNA-seq references.
-                          We tested multiple references, genesets and statistical approaches to evaluate which method provides the most accurate matching results. For this, we used bulk RNA-seq data from murine and human kidney primary cells
-                          as positive controls and matched these to our references. We then assessed how often each method matches our positive control cell type to the correct corresponding reference cell type (figure 1).
-                          Spearman's correlation, which compares the rank order of genes in between samples, performed slightly better than Euclidean distance which is based on the sum of pairwise gene-count (CPM) differences between samples. 
-                          Reference Ransick <em>et al.</em> outperformed all other references.
-                          Spearman's correlation using tubular marker gene expression of Ransick <em>et al.</em> against all positive controls matched 89% of the positive controls to the correct cell type.
-                          Park <em>et al.</em> performed best using global gene expression and Spearman's correlation. Human snRNA-seq reference by Kidney Precision Medicine Project (KPMP) performed best using Euclidean distance and tubular marker gene expression. 16 out of 18
-                          positive controls were derived from mice. KPMP might perform better as a reference dataset with human samples.</p>")
-                          ),
-                         column(6,
-                                tags$div(
-                                  tags$img(src = "score_graph.png", height = "100%", style = "max-width: 100%;"),
-                                  tags$p(HTML("<b>Figure 1</b>&nbsp;<q>Positive controls</q> (n = 18) from bulk RNA-seq kidney primary cells and primary tissue were tested across 3 references, 2 algorithms and 3 gene sets. 
-                                            Score of 100% means that CellMatchR always matched the correct reference cell type to the positive control cell type ."), 
-                                       style = "font-size: 12px;"))
-                                )
+                                HTML('<p>For more information on the development and usage of this tool, refer to our <a href="[DOI_URL]" target="_blank">publication</a> (under review).
+                                Detailed documentation of the code is available on <a href="https://github.com/genepi-freiburg/CellMatchR/tree/main" target="_blank">GitHub</a>.
+                                Comparison of bulk RNA-seq data to scRNA-seq kidney references can also be performed using the TabPFN machine learning model — detailed instructions are available 
+                                <a href="https://github.com/genepi-freiburg/CellMatchR/tree/main/TabPFN_scripts" target="_blank">here</a>.</p>')
+                          )
                        ))
                     )),
               fluidRow(

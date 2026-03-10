@@ -27,10 +27,10 @@ referenceContent <- reactive({
          },
          "Lake et al. (human)" = {
            content <- "<em>Lake et al., 2023:</em><br>
-              <p>Droplet-based single nucleus RNA sequencing dataset from human kidney generated with Chromium v3 platform. 58 kidney biopsies were derived from 35 healthy human donors.
+              <p>Droplet-based single-cell RNA sequencing based on 10x Genomics Chromium platform with Illumina Hi-Seq sequencing. 28 kidney biopsies were derived from 26 healthy human donors.
               77 cell cluster were identified, including epithelial, endothelial, stromal, immune and neural cell types. </p><br>
-              <p>The h5Seurat file of snRNA-seq data was downloaded from Kidney Cell Atlas website kpmp.org repository section on 2023/11/30. Cell type names and abbreviations were adapted from supplementary table 4 of <em>Lake et al.</em>.</p><br>
-              <p>References: <br><em>https://www.kpmp.org accessed on 2023/11/30</em><br>
+              <p>The h5Seurat file of scRNA-seq data was downloaded from Kidney Cell Atlas website kpmp.org repository section on 2025/04/08. Cell type names and abbreviations were adapted from supplementary table 4 of <em>Lake et al.</em>.</p><br>
+              <p>References: <br><em>https://www.kpmp.org0</em><br>
               <p><em>Lake et al., 2023. An atlas of healthy and injured cell states and niches 
               in the human kidney. Nature 619, 585–594.</em></p>"
          },

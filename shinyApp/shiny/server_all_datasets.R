@@ -71,8 +71,8 @@ sample <- reactive({
       return(read.csv("data/CPM_Chen_primary_cells.csv"))
     } else if (selected_demo == "HK-2 proximal tubule cell line") {
       return(read.csv("data/TPM_HK2_khundmiri.csv"))
-    } else if (selected_demo == "mIMCD-3 cell line") {
-      return(read.csv("data/mIMCD_WT_10d_Westermann.csv"))
+    # } else if (selected_demo == "mIMCD-3 cell line") {
+    #   return(read.csv("data/mIMCD_WT_10d_Westermann.csv"))
     }
   }
 })

@@ -21,12 +21,11 @@ observeEvent(input$help_test, {
 observeEvent(input$help_ref, {
   showModal(modalDialog(
     title = "References",
-    HTML("We provide 2 murine single cell RNA-seq reference datasets and 1 human <b>single nucleus</b> RNA-seq reference dataset:<br><br>
+    HTML("We provide 2 murine single cell RNA-seq reference datasets and 2 human single cell RNA-seq reference datasets from the kidney:<br><br>
         <ul><li>Ransick <em>et al.</em> from mouse (recommended)</li>
             <li>Park <em>et al.</em> from mouse </li>
-            <li>Kidney Precision Medicine Project (KPMP) snRNA-seq from healthy human donors </li></ul><br>
-        Ransick <em>et al.</em> consistently provided the most accurate results, followed by Park <em>et al.</em> and KPMP. <p>For more info on how we evaluated the methods, refer to the tab <q>About</q>.</p>
-        For more info on how we obtained and prepared scRNA-seq references, refer to the tab <q>References</q>.")
+            <li>Kidney Precision Medicine Project (KPMP) scRNA-seq from healthy human donors </li>
+            <li>Zhang <em>et al.</em> from human kidney (healthy tissue and RCC tissue) </li></ul><br>")
   ))
 })
 
@@ -43,15 +42,8 @@ observeEvent(input$help_gene, {
     "a manually curated list of marker genes found in all cell types of the kidney.",
     br(),
     strong("tubular marker genes:"),
-    "a manually curated list of marker genes found in tubular cell types of the kidney", 
-    " (1).",
-    br(),
-    br(),
-    p("We recommend to start with global gene expression. For reference Ransick et al. and method Euclidean distance matching accuracy might improve when selecting tubular marker genes. For references Park et al. and KPMP, 
-    global gene expression performed better."),
-    br(),
-    em("(1) for references refer to...")
-  ))
+    "a manually curated list of marker genes found in tubular cell types of the kidney")
+  )
 })
 
 observeEvent(input$help_upload, {
@@ -74,10 +66,9 @@ observeEvent(input$help_upload, {
 observeEvent(input$help_demo, {
   showModal(modalDialog(
     title = NULL,
-    HTML("To explore CellMatchR, we provide 3 preexisting bulk RNA-sequencing datasets for matching:<br><br>
+    HTML("To explore CellMatchR, we provide 2 bulk RNA-sequencing datasets for matching:<br><br>
          <ul><li><b>Nephron primary cells after kidney microdissection </b> by<em> Chen et al.</em></li>
          <li><b>2 replicates of human proximal tubule cell line HK-2</b> by<em> Khundmiri et al.</em></li>
-         <li><b>4 replicates of mouse inner medullary collecting duct cell line m-IMCD3</b> by our collaborators Prof. Dr. Michael Köttgen and Dr. Lukas Westermann
          </ul><br>References:<br><em>Chen, L., Chou, C.-L., Knepper, M.A., 2021. A Comprehensive Map of mRNAs and Their Isoforms across All 14 Renal Tubule Segments of Mouse. J. Am. Soc. Nephrol. 32, 897. <a>https://doi.org/10.1681/ASN.2020101406</a></em>
          <br><br><em>Khundmiri, S.J., Chen, L., Lederer, E.D., Yang, C.-R., Knepper, M.A., 2021. Transcriptomes of Major Proximal Tubule Cell Culture Models. J. Am. Soc. Nephrol. 32, 86. <a>https://doi.org/10.1681/ASN.2020010009</a></em>"
 
@@ -114,23 +105,8 @@ observeEvent(input$rho_interpret, {
           <li>Results are ordered from <b>highest to lowest rho</b>. <b>High rho means higher correlation</b> between reference and sample gene expression ranks</li>
           <li>High-dimensional genesets, i.e. all genes, lead to high rho's and small distinctions in between cell types</li>
           <li>Lower dimensional genesets, i.e. marker genes, reduce rho's and increase rho differences between cell types</li>
-          <li>Testing has shown that in most cases, despite these differences, <b>the order of results</b> matters most to determine similarity between reference and sample(s)</li>
           <li><q>Errorbars</q> indicate the <b>minimum</b> and <b>maximum</b> Spearman's rho of sample replicates</li>
           <li>The blue bars show the correlation in between the sample(s)</li></ul>")
   ))
 })
 
-observeEvent(input$ED_interpret, {
-  showModal(modalDialog(
-    title = NULL,
-    HTML("<ul><li>Euclidean distance is a <b>geometric distance metric</b> that measures the distance of the reference genes to the sample genes in a 3D space</li>
-          <li><b>Higher similarity of gene expression</b> of the reference to the sample <b>decreases the distance</b> of the datapoints of the genes in the geometric space</li>
-          <li>Low Euclidean distance means higher similarity</b> between reference and sample gene expression</li> <li>Results show <b>Euclidean distance</b> of selected <b>reference cell type(s)</b> against the <b>median of all selected samples</b></li>
-          <li>Results are ordered from <b>lowest to highest Euclidean distance</b></li>
-          <li>High-dimensional genesets, i.e. all genes, lead to lower distances and small distinctions in between cell types</li>
-          <li>Lower dimensional genesets, i.e. marker genes, increase Euclidean distance and increase differences between cell types</li>
-          <li>Testing has shown that in most cases, despite these differences, <b>the order of results</b> matters most to determine similarity between reference and sample(s)</li>
-          <li>Errorbars</q> indicate the <b>minimum</b> and <b>maximum</b> Euclidean distance of all sample replicates</li>
-         <li>The blue bars show the Euclidean distance between the sample(s)</li></ul></ul>")
-  ))
-})
