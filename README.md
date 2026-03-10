@@ -13,7 +13,7 @@ CellMatchR was generated to help researchers classify and annotate bulk RNA-seq 
 | Folder | Description |
 |--------|-------------|
 | `shinyApp/` | Interactive Shiny application for bulk-to-single-cell matching |
-| `TabPFN/` | User manual and scripts for TabPFN-based cell type classification |
+| `TabPFN_scripts/` | User manual and scripts for TabPFN-based cell type classification |
 
 ---
 
@@ -21,7 +21,7 @@ CellMatchR was generated to help researchers classify and annotate bulk RNA-seq 
 
 The CellMatchR Shiny app allows users to upload bulk RNA-seq data and match it against curated kidney scRNA-seq references interactively — no coding required.
 
-🔗 **[Launch CellMatchR App](https://yourapp.shinyapps.io/CellMatchR)**
+🔗 **[Launch CellMatchR App](https://epi.uniklinik-freiburg.de/cellmatchr)** — https://epi.uniklinik-freiburg.de/cellmatchr
 
 ### Features
 - Upload your own bulk RNA-seq expression data
