@@ -15,3 +15,5 @@ REQUIRED_FILES = {
 DATAFOLDER = os.path.join(Path(__file__).parent, 'datasets')
 
 DATA_REPO_ID = "samuelboehm/cellmatchr"
+
+KNOWN_CELL_TYPES = {"CD", "CNT", "DCT", "EC", "ENDO", "FIB", "IMM", "LOH", "POD", "PT"}
