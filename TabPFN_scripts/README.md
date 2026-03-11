@@ -20,7 +20,25 @@ Minimal setup to run TabPFN trained on four reference transcriptomic kidney prof
 
 ---
 
-## Setup
+## Quick Start with Google Colab
+
+For the easiest experience, use our Google Colab notebook:
+
+🔗 **[Open in Colab](https://colab.research.google.com/github/genepi-freiburg/CellMatchR/blob/main/TabPFN_scripts/CellMatchR_TabPFN.ipynb)**
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/genepi-freiburg/CellMatchR/blob/main/TabPFN_scripts/CellMatchR_TabPFN.ipynb)
+
+The Colab notebook provides:
+- Pre-configured environment with all dependencies
+- Free GPU acceleration
+- Step-by-step guide through the CellMatchR workflow
+- No local installation required
+
+---
+
+## Local Setup Guide
+
+If you prefer to run CellMatchR locally, follow the instructions below for your operating system.
 
 ### Windows
 
