@@ -2,7 +2,7 @@
 
 ## Overview
 
-CellMatchR is a computational framework for matching bulk RNA-seq data - primarily from cell lines - to single-cell RNA-seq (scRNA-seq) reference datasets from the kidney. This repository accompanies the publication **Transcriptome-based cell type assignment for kidney cell culture models** from Schoberth, Boehm *et al.*. *(under review)*.
+CellMatchR is a computational framework for matching bulk RNA-seq data to single-cell RNA-seq (scRNA-seq) reference datasets from the kidney. This repository accompanies the publication **Transcriptome-based cell type assignment for kidney cell culture models** from Schoberth, Boehm *et al.*. *(under review)*.
 
 CellMatchR was generated to help researchers classify and annotate bulk RNA-seq samples from kidney cell lines by leveraging curated kidney scRNA-seq reference atlases, using both correlation-based approaches and machine learning (TabPFN).
 
