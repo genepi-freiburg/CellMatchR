@@ -227,18 +227,24 @@ ui <- dashboardPage(
                         h3("Legal notice (Impressum)", style = "color: #0072B2;"),
                         hr(),
                         h4("Responsible for the content of this website:",
+                           br(),
                            br()),
                         fluidRow(
                           column(6,
+                                 img(src = "NephGen_Logo.svg", height = "100px", style = "margin-bottom: 10px;"),
+                                 br(),
                                  "Service Project S1",
                                  br(),
                                  "Collaborative Research Center 1453",
                                  br(),
                                  "Nephrogenetics (NephGen)",
                                  br(),
-                                 HTML("Website: <a>https://www.sfb1453.uni-freiburg.de/</a>")),
+                                 HTML("Website: <a href='https://www.sfb1453.uni-freiburg.de/' target='_blank'>https://www.sfb1453.uni-freiburg.de/</a>")
+                                 ),
                           column(6,
-                                 "Institute for Genetic Epidemiology",
+                                 img(src = "EPI_logo_full.svg", height = "100px", style = "margin-bottom: 10px;"),
+                                 br(),
+                                 "Institute of Epidemiology and Prevention",
                                  br(),
                                  "Universitätsklinikum Freiburg",
                                  br(),
@@ -246,7 +252,8 @@ ui <- dashboardPage(
                                  br(),
                                  "79106 Freiburg, Germany",
                                  br(),
-                                 HTML("Website: <a>https://www.uniklinik-freiburg.de/genetische-epidemiologie.html</a>"))
+                                 HTML("Website: <a href='https://www.uniklinik-freiburg.de/epidemiologie.html' target='_blank'>https://www.uniklinik-freiburg.de/epidemiologie.html</a>")
+                          )
                         ),
                         br(),
                         HTML("<u>We are happy to receive feedback. For this, please contact:</u>"),
