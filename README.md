@@ -2,7 +2,7 @@
 
 ## Overview
 
-CellMatchR is a computational framework for matching bulk RNA-seq data - primarily from cell lines - to single-cell RNA-seq (scRNA-seq) reference datasets from the kidney. This repository accompanies the publication **Transcriptome-based cell type assignment for kidney cell culture models ** from Schoberth, Boehm et al. *(under review)*.
+CellMatchR is a computational framework for matching bulk RNA-seq data - primarily from cell lines - to single-cell RNA-seq (scRNA-seq) reference datasets from the kidney. This repository accompanies the publication **Transcriptome-based cell type assignment for kidney cell culture models** from Schoberth, Boehm *et al.*. *(under review)*.
 
 CellMatchR was generated to help researchers classify and annotate bulk RNA-seq samples from kidney cell lines by leveraging curated kidney scRNA-seq reference atlases, using both correlation-based approaches and machine learning (TabPFN).
 
@@ -12,7 +12,7 @@ CellMatchR was generated to help researchers classify and annotate bulk RNA-seq 
 
 | Folder | Description |
 |--------|-------------|
-| `shinyApp/` | Interactive Shiny application for bulk-to-single-cell matching |
+| `shinyApp/` | Interactive Shiny application for bulk-to-single-cell matching based on gene expression ranks |
 | `TabPFN_scripts/` | User manual and scripts for TabPFN-based cell type classification |
 
 ---
@@ -51,7 +51,7 @@ TabPFN is a transformer-based model for tabular data classification and provides
 
 ## Requirements
 
-### Shiny App
+### Shiny App (if installed locally)
 - R (>= 4.0)
 - See `shinyApp/` for required R packages
 
@@ -65,7 +65,7 @@ TabPFN is a transformer-based model for tabular data classification and provides
 
 If you use CellMatchR in your research, please cite:
 
-> **[Authors]**. *[Title]*. [Journal], [Year]. [DOI]
+> **Schoberth, Boehm et al.**. *Transcriptome-based cell type assignment for kidney cell culture models*. [Journal], [Year]. [DOI]
 
 ---
 
