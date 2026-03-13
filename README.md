@@ -71,6 +71,6 @@ If you use CellMatchR in your research, please cite:
 
 ## Contact
 
-For questions, bugs, or feature requests please open a [GitHub Issue](https://github.com/yourusername/CellMatchR/issues) or contact **[your email]**.
+For questions, bugs, or feature requests please open a [GitHub Issue](https://github.com/yourusername/CellMatchR/issues).
 
 
