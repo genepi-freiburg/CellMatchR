@@ -21,7 +21,7 @@ CellMatchR was generated to help researchers classify and annotate bulk RNA-seq 
 
 The CellMatchR Shiny app allows users to upload bulk RNA-seq data and match it against curated kidney scRNA-seq references interactively — no coding required.
 
-🔗 **[Launch CellMatchR App](https://epi.uniklinik-freiburg.de/cellmatchr)** — https://epi.uniklinik-freiburg.de/cellmatchr
+🔗 **[Launch CellMatchR App](https://nephgen2024.shinyapps.io/13_CellMatchR_App/)**
 
 ### Features
 - Upload your own bulk RNA-seq expression data
