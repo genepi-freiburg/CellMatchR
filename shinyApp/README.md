@@ -3,4 +3,4 @@ This folder contains the scripts and input data required to run the CellMatchR a
 
 We also provide the app in our shiny webserver so that no downlod or installation is needed. Simply go to:
 
-🔗 **[Launch CellMatchR App](https://epi.uniklinik-freiburg.de/cellmatchr)** — https://epi.uniklinik-freiburg.de/cellmatchr
+🔗 **[Launch CellMatchR App](https://nephgen2024.shinyapps.io/13_CellMatchR_App/)**
