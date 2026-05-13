@@ -83,7 +83,7 @@ def main():
 
 
     logger.info("Loading data...")
-    test_settings = load_data(args.reference_datasets, user_csv_path=args.csv)
+    test_settings = load_data(reference_datasets=args.reference_datasets, csv_path=args.csv)
     os.makedirs("results", exist_ok=True)
 
     all_results = []
