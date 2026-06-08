@@ -42,7 +42,11 @@ def fit_predict_evaluate(X_train, y_train, X_test, y_test):
     # Train TabPFN
     logger.info("Training TabPFN...")
     tabpfn_clf = TabPFNClassifier(device="cuda" if is_available() else "cpu",
-                                  ignore_pretraining_limits=True) # Ignoring limits for local CPU training
+                                  ignore_pretraining_limits=True)
+    
+    # print out used checkpoint of TabPFN
+    logger.info(f"Using TabPFN checkpoint: {tabpfn_clf.model_path}")
+
     start_time = time()
     tabpfn_clf.fit(X_train.values, y_train.values)
     logger.info(f"TabPFN training time: {time() - start_time:.2f} seconds")
@@ -78,6 +82,9 @@ def main():
                         help="List of reference datasets to use (default: all)")
     parser.add_argument("--csv", type=str, default=None,
                         help="Path to a CSV file with cells as rows and genes as columns (gene names as headers)")
+    
+    parser.add_argument("--model", type=str, default="tabpfn",
+                        help="Model to use for evaluation (default: tabpfn)")
 
     args = parser.parse_args()
 
