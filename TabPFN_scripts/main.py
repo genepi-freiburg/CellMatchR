@@ -8,6 +8,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from tabpfn import TabPFNClassifier
+from tabpfn.model_loading import resolve_model_version
+from tabpfn.constants import ModelPath
+
 from torch.cuda import is_available
 
 from utils import load_data, prepare_X_y
@@ -44,8 +47,9 @@ def fit_predict_evaluate(X_train, y_train, X_test, y_test):
     tabpfn_clf = TabPFNClassifier(device="cuda" if is_available() else "cpu",
                                   ignore_pretraining_limits=True)
     
-    # print out used checkpoint of TabPFN
-    logger.info(f"Using TabPFN checkpoint: {tabpfn_clf.model_path}")
+    # print out used of TabPFN version
+    version = resolve_model_version(None)  # None == "auto"
+    logger.info(f"Resolved model version: {version} / {version.value}")
 
     start_time = time()
     tabpfn_clf.fit(X_train.values, y_train.values)
