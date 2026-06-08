@@ -49,7 +49,7 @@ def fit_predict_evaluate(X_train, y_train, X_test, y_test):
     
     # print out used of TabPFN version
     version = resolve_model_version(None)  # None == "auto"
-    logger.info(f"Resolved model version: {version} / {version.value}")
+    logger.info(f"Resolved model version: {version.value}")
 
     start_time = time()
     tabpfn_clf.fit(X_train.values, y_train.values)
